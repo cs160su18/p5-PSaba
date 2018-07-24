@@ -15,52 +15,40 @@
 	</head>
 	<body>
 		<!-- Your layout here -->
-    <h1>
-      Admin page
-    </h1>
-    <h4>
-      Users
-    </h4>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Email</th>
-          <th scope="col">Name</th>
-          <th scope="col">Password</th>
-        </tr>
-      </thead>
-      <tbody>
-      {% for use in users %}
-      <tr>
-        <td>{{use.email}}</td>
-        <td>{{use.name}}</td>
-        <td>{{use.password}}</td>
-      </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-    <h4>
-      Meetings
-    </h4>
-    <table class="table">
-      <thead>
-        <th scope="col">Name</th>
-        <th scope="col">Description</th>
-        <th scope="col">Participants</th>
-      </thead>
-      {% for meet in meetings %}
-      <tr>
-         <td>{{meet.name}}</td>
-         <td>{{meet.description}}</td>
-         <td>{% for part in meet.participants.all %}
-              {{part.name}}
-            {% endfor %}
-        </td>
-      </tr>
-      {% endfor %}
-    </table>
+    Sign in page
+    {{users}}
+<!--     <form>{% csrf_token %} -->
+    <div class="form-group"> 
+      <label for="exampleInputEmail1">Email address</label>
+      <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Password</label>
+      <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password">
+    </div>
+    <button type="submit" id="submitting" class="btn btn-primary">Submit</button>
+<!--   </form> -->
   <script>
    // using jQuery
+    $(document).ready(function () {
+      $("#submitting").on('click', function(event){
+      var postData = {
+        'email': $('#exampleInputEmail1').val(),
+        'password' : $('#exampleInputPassword1').val(),
+      };
+      $.ajax({
+        url: "/life/signin/",
+        method: "POST",
+        headers: { "X-CSRFToken" : csrftoken},
+        data: JSON.stringify(postData),
+        contentType: "application/json",
+        dataType: "json"
+      });
+    });
+  //your code here
+    });
+  
     
     function getCookie(name) {
         var cookieValue = null;

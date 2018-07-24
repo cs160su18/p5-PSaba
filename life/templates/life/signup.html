@@ -1,0 +1,74 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title></title>
+
+		<link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="{% static '/life/vendor/bootstrap/css/bootstrap.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static '/life/css/main.css' %}" />
+
+		<script src="{% static '/life/vendor/jquery/jquery-3.3.1.min.js' %}"></script>
+		<script src="{% static '/life/vendor/jquery-ui/jquery-ui.min.js' %}"></script>
+	</head>
+	<body>
+		<!-- Your layout here -->
+    Sign up page
+    {{users}}
+<!--     <form method="post"> {% csrf_token %} -->
+    <div class="form-group">
+      <label for="exampleInputEmail1">Email address</label>
+      <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Name</label>
+      <input type="text" class="form-control" name="name" id="exampleInputEmail2" aria-describedby="emailHelp" placeholder="Enter email">
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Password</label>
+      <input type="password" class="form-control" name="password" id="exampleInputPassword1" placeholder="Password">
+    </div>
+    <button type="submit" id="submitting" class="btn btn-primary">Submit</button>
+<!--   </form> -->
+  <script>
+        $(document).ready(function () {
+      $("#submitting").on('click', function(event){
+      var postData = {
+        'email': $('#exampleInputEmail1').val(),
+        'name' : $('#exampleInputEmail2').val(),
+        'password' : $('#exampleInputPassword1').val(),
+      };
+      $.ajax({
+        url: "/life/signup/",
+        method: "POST",
+        headers: { "X-CSRFToken" : csrftoken},
+        data: JSON.stringify(postData),
+        contentType: "application/json",
+        dataType: "json"
+      });
+    });
+  //your code here
+    });
+   // using jQuery
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken'); 
+  </script>
+	</body>
+</html>
